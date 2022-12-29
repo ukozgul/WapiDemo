@@ -16,6 +16,7 @@ namespace WapiDemo.Controllers
         {
             Histogram hst = new Histogram();
             hst.Hstgrm = new();
+            //Histogram dict.e eklenmesi
             foreach (var s in sesliHarfler)
             {
                 hst.Hstgrm.Add(s, 0);
