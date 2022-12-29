@@ -2,9 +2,9 @@
 
 namespace WapiDemo.Models
 {
-    public class Vowel
+    public class RequestV
     {
-        public string Language { get; set; } = "tr";
+        public string Language { get; set; } 
         [Required]
         public string Text { get; set; } 
     }

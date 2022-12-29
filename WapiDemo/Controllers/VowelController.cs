@@ -7,34 +7,48 @@ namespace WapiDemo.Controllers
     [Route("[controller]")]
     public class VowelController : ControllerBase
     {
-        private static List<char> sesliHarfler = new List<char> 
+        private static List<char> sesliHarfler = new List<char>
         {'a','e','ı','i','u','ü','o','ö','A','E','I', 'İ', 'O', 'Ö', 'U', 'Ü' };
 
         [HttpPost]
         [Route("Vowel")]
-        public ActionResult<Histogram> PostVowel(Vowel vowel)
+        //public ResponseV MetinHistogram(RequestV req)
+        public ActionResult<ResponseV> MetinHistogram(RequestV req) //Else yazıp BadRequest denildiği için ActionResult kullanıldı.
         {
-            Histogram hst = new Histogram();
-            hst.Hstgrm = new();
-            //Histogram dict.e eklenmesi
-            foreach (var s in sesliHarfler)
+
+
+            //Dönüş Modeli
+            var result = new ResponseV();
+
+            //Dic initialize (NullExeptionError almamak için)
+            //result.HistogramData = new Dictionary<char, int>(); => Modelde (ResponseV) initialize edildi....
+            
+            if (req.Language=="tr")
             {
-                hst.Hstgrm.Add(s, 0);
-                
-            }
-            foreach (var v in vowel.Text)
-            {
-                if (sesliHarfler.Contains(v))
+
+                //Sesli harfler listesinin Dict.e eklenmesi
+                foreach (var s in sesliHarfler)
                 {
-                    hst.Hstgrm[v]++;
-                
-                
+                    result.HistogramData.Add(s, 0);
                 }
 
-            }
-            hst.Text = vowel.Text;
+                foreach (var v in req.Text)
+                {
+                    if (sesliHarfler.Contains(v))
+                    {
+                        result.HistogramData[v]++;
+                    }
+                }
+                result.Text = req.Text;
 
-            return Ok(hst);                
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+                return Ok(result);
+
         }
 
 
